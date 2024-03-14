@@ -49,7 +49,18 @@ struct LoginView: View {
                 // Action à exécuter lorsque le bouton est appuyé
                 self.login()
             }) {
-                Text("Valider")
+                Text("Se connecter")
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+            }
+            
+            Button(action: {
+                // Action à exécuter lorsque le bouton est appuyé
+                self.login()
+            }) {
+                Text("S'inscrire")
                     .padding()
                     .background(Color.blue)
                     .foregroundColor(.white)
