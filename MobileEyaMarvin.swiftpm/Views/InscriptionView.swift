@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InscriptionView: View {
+struct BasicInfoView: View {
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     @State private var username: String = ""
@@ -15,121 +15,140 @@ struct InscriptionView: View {
     @State private var email: String = ""
     @State private var association: String = ""
     @State private var phoneNumber: String = ""
+
+    var body: some View {
+        VStack {
+            TextField("Prénom", text: $firstName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            TextField("Nom", text: $lastName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            TextField("Pseudo", text: $username)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            TextField("Email", text: $email)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            SecureField("Mot de passe", text: $password)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            TextField("Association", text: $association)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            TextField("Numéro de téléphone", text: $phoneNumber)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
+            NavigationLink(destination: AdditionalInfoView(firstName: firstName, lastName: lastName, username: username, password: password, email: email, association: association, phoneNumber: phoneNumber)) {
+                Text("Suivant")
+            }
+            .padding()
+        }
+        .padding()
+        .navigationBarTitle("Inscription")
+    }
+}
+
+struct AdditionalInfoView: View {
+    var firstName: String
+    var lastName: String
+    var username: String
+    var password: String
+    var email: String
+    var association: String
+    var phoneNumber: String
+
     @State private var chercheUnLogement: Bool = false
-    @State private var housingOptions = ["Oui", "Non"]
-    @State private var selectedOption = 0
     @State private var isVegetarian: Bool = false
     @State private var tshirtSize = 0
     @State private var tshirtSizes = ["S", "M", "L"]
-    
-    
+
     var body: some View {
+        VStack {
+            HStack {
+                Text("Cherche un logement ?")
+                    .font(.headline)
+                    .padding(.bottom, 4)
                 
-        ScrollView {
-            Text("Inscription")
-                        .font(.title)
-            VStack {
-                                
-                TextField("Prénom", text: $firstName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                Spacer()
                 
-                TextField("Nom", text: $lastName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                Picker("Cherche un logement ?", selection: $chercheUnLogement) {
+                    Text("Oui").tag(true)
+                    Text("Non").tag(false)
+                }
+                .pickerStyle(MenuPickerStyle())
+            }
+            .padding()
+
+            HStack {
+                Text("Végétarien ?")
+                    .font(.headline)
+                    .padding(.bottom, 4)
                 
-                TextField("Pseudo", text: $username)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                SecureField("Mot de passe", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                TextField("Association", text: $association)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                TextField("Numéro de téléphone", text: $phoneNumber)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                VStack(alignment: .leading) {
-                    Text("Cherche un logement ?")
-                        .font(.headline)
-                        .padding(.bottom, 4)
-                    
-                    Picker("Cherche un logement ?", selection: $chercheUnLogement) {
+                Picker("Végétarien ?", selection: $isVegetarian) {
                         Text("Oui").tag(true)
                         Text("Non").tag(false)
-                    }
-                    .pickerStyle(MenuPickerStyle())
                 }
-                .padding()
-                
-                VStack(alignment: .leading) {
-                    Text("Végétarien ?")
-                        .font(.headline)
-                        .padding(.bottom, 4)
-                    
-                    Picker("Végétarien ?", selection: $isVegetarian) {
-                        Text("Oui").tag(true)
-                        Text("Non").tag(false)
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                }
-                .padding()
-                
-                VStack(alignment: .leading) {
-                    Text("Taille du t-shirt")
-                        .font(.headline)
-                        .padding(.bottom, 4)
-                    
-                    Picker(selection: $tshirtSize, label: Text("")) {
+                .pickerStyle(MenuPickerStyle())
+                .padding(.leading)
+            }
+
+            HStack {
+                Text("Taille du t-shirt")
+                .font(.headline)
+                .padding(.bottom, 4)
+
+                Picker(selection: $tshirtSize, label: Text("")) {
                         ForEach(0 ..< tshirtSizes.count) {
                             Text(self.tshirtSizes[$0])
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
-                }
-                .padding()
-                
+                    .padding(.leading)
             }
-            .fixedSize(horizontal: false, vertical: true)
-                
-                Button(action: {
-                    // Action à exécuter lorsque le bouton est appuyé
-                    self.signup()
-                }) {
-                    Text("S'inscrire")
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .padding()
-                
+
+            Spacer()
+
+            Button(action: {
+                self.signup()
+            }) {
+                Text("S'inscrire")
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
             }
             .padding()
         }
-        
-    
-    
+        .padding()
+    }
+
     func signup() {
         // Logique d'inscription ici
-        print("Prénom: \(firstName), Nom: \(lastName), Pseudo: \(username), Mot de passe: \(password)")
-        
-        // Vous pouvez ajouter votre logique d'inscription ici, par exemple en appelant une API
+        print("Prénom: \(firstName), Nom: \(lastName), Pseudo: \(username), Mot de passe: \(password), Email: \(email), Association: \(association), Numéro de téléphone: \(phoneNumber), Cherche un logement: \(chercheUnLogement), Végétarien: \(isVegetarian), Taille du t-shirt: \(tshirtSizes[tshirtSize])")
+
+        //Ajouter logique d'inscription iciappel API
     }
 }
 
-struct InscriptionView_Previews: PreviewProvider {
+// Vue principale qui démarre le formulaire d'inscription
+struct SignupFormView: View {
+    var body: some View {
+        NavigationView {
+            BasicInfoView()        }
+    }
+}
+
+// Affichez la vue principale dans l'aperçu
+struct SignupFormView_Previews: PreviewProvider {
     static var previews: some View {
-        InscriptionView()
+        SignupFormView()
     }
 }
-
